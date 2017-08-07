@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Final Project: Index
+{% endblock %}
+
+{% block main %}
+<div class = "row">
+	{% for stock in popular %}
+		<div class= "col-md-4 stock-box">
+			<div class="stock-info">
+				<a href='/history?symbol={{ stock["symbol"] }}' + target="_blank" class="blocklink">
+					<h2 id="symbol{{ loop.index }}">{{ stock["symbol"] }}</h2>
+					<h3 id="name{{ loop.index }}">Company Name</h3>
+				</a>
+			</div>
+			<div class="graph-box">
+				<div id="stock-graph{{ loop.index }}">
+
+				</div>
+			</div>
+			<div class="stock-info">
+				<div class="comp-box">
+					<div>
+						<h4>IPO Year:</h4>
+						<p id="ipoyear{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Market Cap:</h4>
+							<p id="markcap{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Sector:</h4>
+							<p id="sector{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Industry:</h4>
+							<p id="industry{{ loop.index }}" class="comp-info">...</p>
+					</div>
+				</div>
+				<div>
+					<h4>Company Info:</h4>
+						<p id="info{{ loop.index }}">...</p>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta content="initial-scale=1, width=device-width" name="viewport"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+		<!-- Bootstrap -->
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+		<link href="/static/styles.css" rel="stylesheet"/>
+
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+		<!-- http://stewartjpark.com/Flask-JSGlue/ -->
+		{{ JSGlue.include() }}
+
+		<!-- app's own JavaScript -->
+		<script src="/static/scripts.js"></script>
+
+		<title>
+			{% block title %}{% endblock %}
+		</title>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/">Final Project</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/">Home</a></li>
+							<li><a href="#">Trending</a></li>
+							<li><a href="#">Explore</a></li>
+						</ul>
+						<form class="navbar-form navbar-right">
+							<input class="form-control" id="search" placeholder="Search..." type="text"/>
+						</form>
+					</div>
+				</div>
+			</nav>
+
+			<main>
+				{% block main %}{% endblock %}
+			</main>
+		</div>
+
+		<!-- jQuery -->
+		<!-- Placed at end of document so pages load faster -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+		<!-- All plugins -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+
+	</body>
+
+</html>

@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	History: {{ symbol }}
+{% endblock %}
+
+{% block main %}
+
+<div class = "row">
+	<div class= "col-md-8 history-box">
+		<div class= "col-md-2 pill-container">
+			<ul class="nav nav-pills nav-stacked">
+				<li><a class="blocklink" data-toggle="pill" href="#INTRADAY" id="minTrigger">MINUTE</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#DAILY" id="dayTrigger">DAILY</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#WEEKLY" id="weekTrigger">WEEKLY</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#MONTHLY" id="monthTrigger">MONTHLY</a></li>
+			</ul>
+		</div>
+		<div class="stock-info">
+			<h2 id="symbol">{{ symbol }}</h2>
+			<h3 id="name"></h3>
+			<div class="comp-box">
+				<div>
+					<h4>IPO Year:</h4>
+					<p id="ipoyear" class="comp-info">...</p>
+				</div>
+				<div>
+					<h4>Market Cap:</h4>
+						<p id="markcap" class="comp-info">...</p>
+				</div>
+				<div>
+					<h4>Sector:</h4>
+						<p id="sector" class="comp-info">...</p>
+				</div>
+				<div>
+					<h4>Industry:</h4>
+						<p id="industry" class="comp-info">...</p>
+				</div>
+			</div>
+		</div>
+		<div class="tab-content">
+			<div id="INTRADAY" class="tab-pane fade in active">
+				<div class="graph-box">
+					<div id="minute-graph">
+
+					</div>
+				</div>
+				<table id="minute-table">
+					<tr><th>MINUTE - Prices and Volumes</th></tr>
+					<tr>
+						<th> Date / Time</th>
+						<th> Open </th>
+						<th> High </th>
+						<th> Low </th>
+						<th> Close </th>
+						<th> Volume </th>
+					</tr>
+					{% for keys in data[0]["Time Series (1min)"] %}
+						<tr>
+							<td id="minute-date{{loop.index}}"> {{ keys }}</td>
+							<td> {{ data[0]["Time Series (1min)"][keys]["1. open"] }}</td>
+							<td> {{ data[0]["Time Series (1min)"][keys]["2. high"] }}</td>
+							<td> {{ data[0]["Time Series (1min)"][keys]["3. low"] }}</td>
+							<td id="minute-close{{loop.index}}"> {{ data[0]["Time Series (1min)"][keys]["4. close"] }}</td>
+							<td> {{ data[0]["Time Series (1min)"][keys]["5. volume"] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div id="DAILY" class="tab-pane fade">
+				<div class="graph-box">
+					<div id="day-graph">
+
+					</div>
+				</div>
+				<table id="day-table">
+					<tr><th>DAILY - Prices and Volumes</th></tr>
+					<tr>
+						<th> Date / Time</th>
+						<th> Open </th>
+						<th> High </th>
+						<th> Low </th>
+						<th> Close </th>
+						<th> Volume </th>
+					</tr>
+					{% for keys in data[1]["Time Series (Daily)"] %}
+						<tr>
+							<td id="day-date{{loop.index}}"> {{ keys }}</td>
+							<td> {{ data[1]["Time Series (Daily)"][keys]["1. open"] }}</td>
+							<td> {{ data[1]["Time Series (Daily)"][keys]["2. high"] }}</td>
+							<td> {{ data[1]["Time Series (Daily)"][keys]["3. low"] }}</td>
+							<td id="day-close{{loop.index}}"> {{ data[1]["Time Series (Daily)"][keys]["4. close"] }}</td>
+							<td> {{ data[1]["Time Series (Daily)"][keys]["5. volume"] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div id="WEEKLY" class="tab-pane fade">
+				<div class="graph-box">
+					<div id="week-graph">
+
+					</div>
+				</div>
+				<table id="week-table">
+					<tr><th>WEEKLY - Prices and Volumes</th></tr>
+					<tr>
+						<th> Date / Time</th>
+						<th> Open </th>
+						<th> High </th>
+						<th> Low </th>
+						<th> Close </th>
+						<th> Volume </th>
+					</tr>
+					{% for keys in data[2]["Weekly Time Series"] %}
+						<tr>
+							<td id="week-date{{loop.index}}"> {{ keys }}</td>
+							<td> {{ data[2]["Weekly Time Series"][keys]["1. open"] }}</td>
+							<td> {{ data[2]["Weekly Time Series"][keys]["2. high"] }}</td>
+							<td> {{ data[2]["Weekly Time Series"][keys]["3. low"] }}</td>
+							<td id="week-close{{loop.index}}"> {{ data[2]["Weekly Time Series"][keys]["4. close"] }}</td>
+							<td> {{ data[2]["Weekly Time Series"][keys]["5. volume"] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div id="MONTHLY" class="tab-pane fade">
+				<div class="graph-box">
+					<div id="month-graph">
+
+					</div>
+				</div>
+				<table id="month-table">
+					<tr><th>MONTHLY - Prices and Volumes</th></tr>
+					<tr>
+						<th> Date / Time</th>
+						<th> Open </th>
+						<th> High </th>
+						<th> Low </th>
+						<th> Close </th>
+						<th> Volume </th>
+					</tr>
+					{% for keys in data[3]["Monthly Time Series"] %}
+						<tr>
+							<td id="month-date{{loop.index}}"> {{ keys }}</td>
+							<td> {{ data[3]["Monthly Time Series"][keys]["1. open"] }}</td>
+							<td> {{ data[3]["Monthly Time Series"][keys]["2. high"] }}</td>
+							<td> {{ data[3]["Monthly Time Series"][keys]["3. low"] }}</td>
+							<td id="month-close{{loop.index}}"> {{ data[3]["Monthly Time Series"][keys]["4. close"] }}</td>
+							<td> {{ data[3]["Monthly Time Series"][keys]["5. volume"] }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 article-box">
+		<ul id="article-list">
+
+		</ul>
+	</div>
+
+</div>
+
+{% endblock %}
