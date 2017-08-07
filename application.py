@@ -35,9 +35,17 @@ def history():
 	if symbol == None:
 		raise RuntimeError("MissingArgument")
 	symbol = symbol.upper()
-	data = {0: helpers.history(symbol,"INTRADAY"), 1: helpers.history(symbol,"DAILY"),
-			2: helpers.history(symbol,"WEEKLY"), 3: helpers.history(symbol,"MONTHLY")}
-	return render_template("history.html", symbol= symbol, data=data)
+	return render_template("history.html", symbol= symbol)
+
+@app.route("/table/<timeframe>")
+def table(timeframe):
+	"""Returns table data in JSON format"""
+	symbol = request.args.get("symbol")
+	if symbol == None:
+		raise RuntimeError("MissingArgument")
+	symbol = symbol.upper()
+	data = helpers.history(symbol, timeframe)
+	return jsonify(data)
 
 @app.route("/daily")
 def daily():

@@ -10,10 +10,10 @@
 	<div class= "col-md-8 history-box">
 		<div class= "col-md-2 pill-container">
 			<ul class="nav nav-pills nav-stacked">
-				<li><a class="blocklink" data-toggle="pill" href="#INTRADAY" id="minTrigger">MINUTE</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#DAILY" id="dayTrigger">DAILY</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#WEEKLY" id="weekTrigger">WEEKLY</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#MONTHLY" id="monthTrigger">MONTHLY</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#INTRADAY" id="intradayTrigger">MINUTE</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#DAILY" id="dailyTrigger">DAILY</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#WEEKLY" id="weeklyTrigger">WEEKLY</a></li>
+				<li><a class="blocklink" data-toggle="pill" href="#MONTHLY" id="monthlyTrigger">MONTHLY</a></li>
 			</ul>
 		</div>
 		<div class="stock-info">
@@ -45,7 +45,7 @@
 
 					</div>
 				</div>
-				<table id="minute-table">
+				<table id="intraday-table">
 					<tr><th>MINUTE - Prices and Volumes</th></tr>
 					<tr>
 						<th> Date / Time</th>
@@ -55,25 +55,16 @@
 						<th> Close </th>
 						<th> Volume </th>
 					</tr>
-					{% for keys in data[0]["Time Series (1min)"] %}
-						<tr>
-							<td id="minute-date{{loop.index}}"> {{ keys }}</td>
-							<td> {{ data[0]["Time Series (1min)"][keys]["1. open"] }}</td>
-							<td> {{ data[0]["Time Series (1min)"][keys]["2. high"] }}</td>
-							<td> {{ data[0]["Time Series (1min)"][keys]["3. low"] }}</td>
-							<td id="minute-close{{loop.index}}"> {{ data[0]["Time Series (1min)"][keys]["4. close"] }}</td>
-							<td> {{ data[0]["Time Series (1min)"][keys]["5. volume"] }}</td>
-						</tr>
-					{% endfor %}
+
 				</table>
 			</div>
 			<div id="DAILY" class="tab-pane fade">
 				<div class="graph-box">
-					<div id="day-graph">
+					<div id="daily-graph">
 
 					</div>
 				</div>
-				<table id="day-table">
+				<table id="daily-table">
 					<tr><th>DAILY - Prices and Volumes</th></tr>
 					<tr>
 						<th> Date / Time</th>
@@ -83,16 +74,7 @@
 						<th> Close </th>
 						<th> Volume </th>
 					</tr>
-					{% for keys in data[1]["Time Series (Daily)"] %}
-						<tr>
-							<td id="day-date{{loop.index}}"> {{ keys }}</td>
-							<td> {{ data[1]["Time Series (Daily)"][keys]["1. open"] }}</td>
-							<td> {{ data[1]["Time Series (Daily)"][keys]["2. high"] }}</td>
-							<td> {{ data[1]["Time Series (Daily)"][keys]["3. low"] }}</td>
-							<td id="day-close{{loop.index}}"> {{ data[1]["Time Series (Daily)"][keys]["4. close"] }}</td>
-							<td> {{ data[1]["Time Series (Daily)"][keys]["5. volume"] }}</td>
-						</tr>
-					{% endfor %}
+
 				</table>
 			</div>
 			<div id="WEEKLY" class="tab-pane fade">
@@ -101,7 +83,7 @@
 
 					</div>
 				</div>
-				<table id="week-table">
+				<table id="weekly-table">
 					<tr><th>WEEKLY - Prices and Volumes</th></tr>
 					<tr>
 						<th> Date / Time</th>
@@ -111,16 +93,7 @@
 						<th> Close </th>
 						<th> Volume </th>
 					</tr>
-					{% for keys in data[2]["Weekly Time Series"] %}
-						<tr>
-							<td id="week-date{{loop.index}}"> {{ keys }}</td>
-							<td> {{ data[2]["Weekly Time Series"][keys]["1. open"] }}</td>
-							<td> {{ data[2]["Weekly Time Series"][keys]["2. high"] }}</td>
-							<td> {{ data[2]["Weekly Time Series"][keys]["3. low"] }}</td>
-							<td id="week-close{{loop.index}}"> {{ data[2]["Weekly Time Series"][keys]["4. close"] }}</td>
-							<td> {{ data[2]["Weekly Time Series"][keys]["5. volume"] }}</td>
-						</tr>
-					{% endfor %}
+
 				</table>
 			</div>
 			<div id="MONTHLY" class="tab-pane fade">
@@ -129,7 +102,7 @@
 
 					</div>
 				</div>
-				<table id="month-table">
+				<table id="monthly-table">
 					<tr><th>MONTHLY - Prices and Volumes</th></tr>
 					<tr>
 						<th> Date / Time</th>
@@ -139,16 +112,7 @@
 						<th> Close </th>
 						<th> Volume </th>
 					</tr>
-					{% for keys in data[3]["Monthly Time Series"] %}
-						<tr>
-							<td id="month-date{{loop.index}}"> {{ keys }}</td>
-							<td> {{ data[3]["Monthly Time Series"][keys]["1. open"] }}</td>
-							<td> {{ data[3]["Monthly Time Series"][keys]["2. high"] }}</td>
-							<td> {{ data[3]["Monthly Time Series"][keys]["3. low"] }}</td>
-							<td id="month-close{{loop.index}}"> {{ data[3]["Monthly Time Series"][keys]["4. close"] }}</td>
-							<td> {{ data[3]["Monthly Time Series"][keys]["5. volume"] }}</td>
-						</tr>
-					{% endfor %}
+
 				</table>
 			</div>
 		</div>
