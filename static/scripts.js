@@ -168,6 +168,7 @@ function drawChart3() {
 
 function drawMinuteChart() {
 	// Create the data table.
+<<<<<<< HEAD
 	var parameters = {
 		symbol: $('#symbol').text(),
 	};
@@ -203,6 +204,20 @@ function drawMinuteChart() {
 		$(window).resize(reDrawMinute);
 	    $('#intradayTrigger').click(reDrawMinute);
 	});
+=======
+	var dates = [["Date", "Price"]];
+	for(i = 100; i>=1; --i)
+		dates.push([$('#intraday-date' + String(i)).text(), parseFloat($('#intraday-close' + String(i)).text())]);
+	minTable = new google.visualization.arrayToDataTable(dates);
+	var minChart = new google.visualization.LineChart(document.getElementById('minute-graph'));
+	function reDrawMinute() {
+		setTimeout(function(){
+			minChart.draw(minTable, optionsHistory);
+		}, 200);
+	}
+	$(window).resize(reDrawMinute);
+    $('#intradayTrigger').click(reDrawMinute);
+>>>>>>> c4be35396b11c7a4bbadfc469ced7d3f24cef179
 }
 
 function drawDayChart() {
