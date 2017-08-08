@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Search: {{ q }}
+{% endblock %}
+
+{% block main %}
+<div class = "row">
+	{% for symbol in popular %}
+		<div class= "col-md-12 stock-box">
+			<div class="col-md-4 stock-info">
+				<a href='/history?symbol={{ symbol }}' + target="_blank" class="blocklink">
+					<h2 id="symbol{{ loop.index }}">{{ symbol }}</h2>
+					<h3 id="name{{ loop.index }}">Company Name</h3>
+				</a>
+				<div class="comp-box">
+					<div>
+						<h4>IPO Year:</h4>
+						<p id="ipoyear{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Market Cap:</h4>
+							<p id="markcap{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Sector:</h4>
+							<p id="sector{{ loop.index }}" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Industry:</h4>
+							<p id="industry{{ loop.index }}" class="comp-info">...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="search-box">
+					<div class="graph-box">
+						<div id="stock-graph{{ loop.index }}">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	<div class="apology">
+		<span>{{ apology }}</span>
+	</div>
+</div>
+
+{% endblock %}

@@ -3,7 +3,7 @@ import tokenize
 import urllib
 import json
 import collections
-from flask import Flask, jsonify, render_template, request, url_for
+from flask import Flask, jsonify, render_template, request, url_for, redirect
 from flask_jsglue import JSGlue
 
 from cs50 import SQL
@@ -80,6 +80,23 @@ def info():
 	symbol = symbol.upper()
 	result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol", symbol = symbol)
 	return jsonify(result)
+
+@app.route("/search")
+def search():
+	""" Search for a stock ticker """
+	q = request.args.get("q")
+	q = q.split(' ', 1)[0]
+	obj = []
+	result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol", symbol = q)
+	if result == []:
+		result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol", symbol = "%"+q+"%")
+		if result == []:
+			return render_template("search.html", popular= obj, apology="sorry, no results could be found...", q=q)
+		for i in result:
+			obj.append(i["Symbol"])
+		print(obj)
+		return render_template("search.html", popular= obj, apology="", q=q)
+	return redirect("/history?symbol="+q)
 
 if __name__ == '__main__':
 	app.run()
