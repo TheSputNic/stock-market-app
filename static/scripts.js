@@ -168,34 +168,18 @@ function drawChart3() {
 
 function drawMinuteChart() {
 	// Create the data table.
-	var parameters = {
-		symbol: $('#symbol').text(),
-	};
-	$.getJSON(Flask.url_for("table", {timeframe:"INTRADAY"}), parameters)
-	.done(function(data) {
-		var minTable = new google.visualization.DataTable();
-		minTable.addColumn('string', 'Date');
-		minTable.addColumn('number', 'Price');
-		var table = "";
-		for (var item in data) {
-			tableName = item;
-		}
-		var arr = [];
-		for (var key in data[tableName]) {
-			arr.push(key);
-		}
-		for (var i=0; i<99; ++i) {
-			minTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
-		}
-		var minChart = new google.visualization.LineChart(document.getElementById('minute-graph'));
-		function reDrawMinute() {
-			setTimeout(function(){
-				minChart.draw(minTable, optionsHistory);
-			}, 200);
-		}
-		$(window).resize(reDrawMinute);
-	    $('#intradayTrigger').click(reDrawMinute);
-	});
+	var dates = [["Date", "Price"]];
+	for(i = 100; i>=1; --i)
+		dates.push([$('#intraday-date' + String(i)).text(), parseFloat($('#intraday-close' + String(i)).text())]);
+	minTable = new google.visualization.arrayToDataTable(dates);
+	var minChart = new google.visualization.LineChart(document.getElementById('minute-graph'));
+	function reDrawMinute() {
+		setTimeout(function(){
+			minChart.draw(minTable, optionsHistory);
+		}, 200);
+	}
+	$(window).resize(reDrawMinute);
+    $('#intradayTrigger').click(reDrawMinute);
 }
 
 function drawDayChart() {
