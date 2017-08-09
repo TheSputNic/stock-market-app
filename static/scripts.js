@@ -273,7 +273,6 @@ function drawMonthChart() {
 function getCompanyInfo(name, out) {
 	name = name.replace('"', ' ');
 	name = name.replace('"', ' ');
-	console.log(name);
 	var url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + name + "&redirects&origin=*";
 	$.getJSON(url)
 	.done(function(data) {
@@ -284,13 +283,14 @@ function getCompanyInfo(name, out) {
 			if (info == undefined)
 			{
 				replaced = name.replace(",", " ");
-				replaced = name.replace(" Inc.", " ");
-				replaced = name.replace(" Inc", " ");
-				replaced = name.replace(" Ltd.", " ");
-				replaced = name.replace(" Ltd", " ");
-				replaced = name.replace(" L.P.", " ");
-				replaced = name.replace(" Corp.", " ");
-				replaced = name.replace(" Corporation", " ");
+				replaced = replaced.replace(/Incorporated/gi, " ");
+				replaced = replaced.replace(/Inc/gi, " ");
+				replaced = replaced.replace(/Ltd/gi, " ");
+				replaced = replaced.replace(/Limited/gi, " ");
+				replaced = replaced.replace(/L.P./gi, " ");
+				replaced = replaced.replace(/Corporation/gi, " ");
+				replaced = replaced.replace(/Corp/gi, " ");
+				replaced = replaced.replace(".", " ");
 				if (replaced != name) {
 					getCompanyInfo(replaced, out);
 				}
@@ -324,7 +324,8 @@ function getDBInfo(i) {
 	};
 	$.getJSON(Flask.url_for("info"), parameters)
 	.done(function(data) {
-		$('#name'+ i.toString()).text(data[0]["Name"]);
+		name = data[0]["Name"].replace(/&#39;/g, "'");
+		$('#name'+ i.toString()).text(name);
 		$("#ipoyear" + i.toString()).text(data[0]["IPOYear"]);
 		$("#markcap" + i.toString()).text(data[0]["MarketCap"]);
 		$("#sector" + i.toString()).text(data[0]["Sector"]);

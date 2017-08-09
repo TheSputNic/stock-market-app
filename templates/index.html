@@ -11,7 +11,7 @@
 			<div class="stock-info">
 				<a href='/history?symbol={{ stock["Symbol"] }}' + class="blocklink">
 					<h2 id="symbol{{ loop.index }}">{{ stock["Symbol"] }}</h2>
-					<h3 id="name{{ loop.index }}">"{{ stock["Name"] }}"</h3>
+					<h3 id="name{{ loop.index }}">"{{ stock["Name"] | safe }}"</h3>
 				</a>
 			</div>
 			<div class="graph-box">
@@ -31,11 +31,11 @@
 					</div>
 					<div>
 						<h4>Sector:</h4>
-							<p id="sector{{ loop.index }}" class="comp-info">{{ stock["Sector"] }}</p>
+							<p id="sector{{ loop.index }}" class="comp-info">{{ stock["Sector"] | safe }}</p>
 					</div>
 					<div>
 						<h4>Industry:</h4>
-							<p id="industry{{ loop.index }}" class="comp-info">{{ stock["Industry"] }}</p>
+							<p id="industry{{ loop.index }}" class="comp-info">{{ stock["Industry"] | safe }}</p>
 					</div>
 				</div>
 				<div>
