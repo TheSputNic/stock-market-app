@@ -9,7 +9,7 @@
 	{% for symbol in popular %}
 		<div class= "col-md-12 stock-box">
 			<div class="col-md-4 stock-info">
-				<a href='/history?symbol={{ symbol }}' + target="_blank" class="blocklink">
+				<a href='/history?symbol={{ symbol }}' + class="blocklink">
 					<h2 id="symbol{{ loop.index }}">{{ symbol }}</h2>
 					<h3 id="name{{ loop.index }}">Company Name</h3>
 				</a>

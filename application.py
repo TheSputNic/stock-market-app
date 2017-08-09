@@ -25,8 +25,8 @@ db = SQL("sqlite:///companies.db")
 
 @app.route("/")
 def index():
-	popular = [{"symbol": "AMD"}, {"symbol": "NFLX"}, {"symbol": "TSLA"}]
-	return render_template("index.html", popular = popular)
+	stocks = db.execute("SELECT * FROM companylist WHERE Symbol IN (SELECT Symbol FROM companylist ORDER BY RANDOM() LIMIT 3)")
+	return render_template("index.html", stocks = stocks)
 
 @app.route("/history")
 def history():

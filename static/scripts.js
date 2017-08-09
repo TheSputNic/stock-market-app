@@ -21,14 +21,14 @@ var optionsIndex = {
 	{
 		textPosition: 'none',
 		format: 'currency',
-		baselineColor: '#ffffff',
+		baselineColor: '#262626',
 		gridlines: {
 			count: 0
 		}
 	},
 	vAxis:
 	{
-		baselineColor: '#ffffff',
+		baselineColor: '#262626',
 		gridlines: {
 			count: 0
 		}
@@ -167,7 +167,15 @@ function drawDayChart() {
 		for (var key in data[tableName]) {
 			arr.push(key);
 		}
-		for (var i=0; i<99; ++i) {
+		if (arr.length>99) {
+			start = arr.length-99;
+			limit = arr.length;
+		}
+		else {
+			start = 0;
+			limit = arr.length;
+		}
+		for (var i=start; i<limit; ++i) {
 			dayTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
 		}
 		var dayChart = new google.visualization.LineChart(document.getElementById('daily-graph'));
@@ -199,7 +207,15 @@ function drawWeekChart() {
 		for (var key in data[tableName]) {
 			arr.push(key);
 		}
-		for (var i=0; i<99; ++i) {
+		if (arr.length>99) {
+			start = arr.length-99;
+			limit = arr.length;
+		}
+		else {
+			start = 0;
+			limit = arr.length;
+		}
+		for (var i=start; i<limit; ++i) {
 			weekTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
 		}
 		var weekChart = new google.visualization.LineChart(document.getElementById('week-graph'));
@@ -231,7 +247,15 @@ function drawMonthChart() {
 		for (var key in data[tableName]) {
 			arr.push(key);
 		}
-		for (var i=0; i<99; ++i) {
+		if (arr.length>99) {
+			start = arr.length-99;
+			limit = arr.length;
+		}
+		else {
+			start = 0;
+			limit = arr.length;
+		}
+		for (var i=start; i<limit; ++i) {
 			monthTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
 		}
 		var monthChart = new google.visualization.LineChart(document.getElementById('month-graph'));
@@ -247,6 +271,9 @@ function drawMonthChart() {
 }
 
 function getCompanyInfo(name, out) {
+	name = name.replace('"', ' ');
+	name = name.replace('"', ' ');
+	console.log(name);
 	var url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + name + "&redirects&origin=*";
 	$.getJSON(url)
 	.done(function(data) {
@@ -256,10 +283,25 @@ function getCompanyInfo(name, out) {
 			}
 			if (info == undefined)
 			{
-				name = name.replace(", Inc.", " ");
-				getCompanyInfo(name, out);
+				replaced = name.replace(",", " ");
+				replaced = name.replace(" Inc.", " ");
+				replaced = name.replace(" Inc", " ");
+				replaced = name.replace(" Ltd.", " ");
+				replaced = name.replace(" Ltd", " ");
+				replaced = name.replace(" L.P.", " ");
+				replaced = name.replace(" Corp.", " ");
+				replaced = name.replace(" Corporation", " ");
+				if (replaced != name) {
+					getCompanyInfo(replaced, out);
+				}
+				else {
+					out.html('"No other information could be found for this company"');
+				}
+
 			}
-			out.html('"' + info +'"');
+			else {
+				out.html('"' + info +'"');
+			}
 	})
 }
 
@@ -326,19 +368,17 @@ function getTable(timeframe) {
 
 $(function() { //on document ready
 	if (window.location.pathname == "/") {
-		for( var i=1; i<4; ++i)
-		{
-			getDBInfo(i);
+		for( var i=1; i<($('.stock-box').length+1); ++i) {
+			name = $('#name'+ i.toString()).text();
+			getCompanyInfo(name, $('#info'+ i.toString()));
 		}
 	}
 
 	if (window.location.pathname == "/search") {
-		for( var i=1; i<($('.stock-box').length+1); ++i)
-		{
+		for( var i=1; i<($('.stock-box').length+1); ++i) {
 			getDBInfo(i);
 		}
-		for( var i=1; i<($('.stock-box').length+1); ++i)
-		{
+		for( var i=1; i<($('.stock-box').length+1); ++i) {
 			drawChart(i, optionsSearch);
 		}
 	}
