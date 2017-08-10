@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	Stock Market App: Index
+	Stock Market App
 {% endblock %}
 
 {% block main %}
@@ -16,7 +16,7 @@
 			</div>
 			<div class="graph-box">
 				<div id="stock-graph{{ loop.index }}">
-
+					<img alt="Loading" src="/static/loading.gif"/>
 				</div>
 			</div>
 			<div class="stock-info">

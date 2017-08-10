@@ -93,6 +93,7 @@ body {
 .apology {
 	margin: 100px;
 }
+
 .apology > span {
 	color: #ffffff;
 	text-align: center;
@@ -104,6 +105,16 @@ body {
 	height: 200px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.graph-box > div > span {
+	color: #ffffff;
+	text-align: center;
+	font-size: 50px;
+}
+
+.graph-box > div > img {
+	height: 200px;
 }
 
 .history-box > .graph-box {

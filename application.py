@@ -25,6 +25,11 @@ db = SQL("sqlite:///companies.db")
 
 @app.route("/")
 def index():
+	stocks = db.execute("SELECT * FROM companylist WHERE (Symbol = 'AMD') OR (Symbol = 'NFLX') OR (Symbol = 'TSLA')")
+	return render_template("index.html", stocks = stocks)
+
+@app.route("/random")
+def random():
 	stocks = db.execute("SELECT * FROM companylist WHERE Symbol IN (SELECT Symbol FROM companylist ORDER BY RANDOM() LIMIT 3)")
 	return render_template("index.html", stocks = stocks)
 
@@ -45,6 +50,8 @@ def table(timeframe):
 		raise RuntimeError("MissingArgument")
 	symbol = symbol.upper()
 	data = helpers.history(symbol, timeframe)
+	if data == "Error":
+		return jsonify("Error")
 	return jsonify(data)
 
 @app.route("/daily")
@@ -55,6 +62,8 @@ def daily():
 		raise RuntimeError("MissingArgument")
 	symbol = symbol.upper()
 	data = helpers.history(symbol, "DAILY")
+	if data == "Error":
+		return jsonify("Error")
 	keys = map(int, data.keys())
 	dates = []
 	for keys in data["Time Series (Daily)"]:
@@ -87,9 +96,9 @@ def search():
 	q = request.args.get("q")
 	q = q.split(' ', 1)[0]
 	obj = []
-	result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol", symbol = q)
+	result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol LIMIT 20", symbol = q)
 	if result == []:
-		result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol", symbol = "%"+q+"%")
+		result = db.execute("SELECT * FROM companylist WHERE (Symbol LIKE :q) OR (Name LIKE :q) LIMIT 20", q = "%"+q+"%")
 		if result == []:
 			return render_template("search.html", popular= obj, apology="sorry, no results could be found...", q=q)
 		for i in result:

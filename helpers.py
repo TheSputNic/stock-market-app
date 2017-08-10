@@ -26,10 +26,12 @@ def history(symbol, timeframe):
 
 	stock_info = "https://www.alphavantage.co/query?function=TIME_SERIES_" + timeframe \
 				+ "&symbol={}&interval=1min".format(urllib.parse.quote(symbol, safe="")) \
-				+ "&apikey=U62GJHH0AYS16H87";
+				+ "&outputsize=compact&apikey=U62GJHH0AYS16H87";
 	with urllib.request.urlopen(stock_info) as url:
 		data = json.loads(url.read().decode(), object_pairs_hook=collections.OrderedDict)
 
+	if len(data) == 1:
+		return "Error"
 	if symbol not in history.cache:
 		history.cache[symbol] = {"INTRADAY": "", "DAILY": "", "WEEKLY": "", "MONTHLY": ""}
 	history.cache[symbol][timeframe] = data

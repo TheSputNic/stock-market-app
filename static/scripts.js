@@ -101,12 +101,17 @@ function drawChart(k, options) {
 	};
 	$.getJSON(Flask.url_for('daily'), parameters)
 	.done(function(data) {
-		for(i = 99; i>=0; --i)
-			dates.push(data[i]);
-		table = new google.visualization.arrayToDataTable(dates);
+		if (data != "Error") {
+			for(i = 99; i>=0; --i)
+				dates.push(data[i]);
+			table = new google.visualization.arrayToDataTable(dates);
 
-		var chart = new google.visualization.LineChart(document.getElementById('stock-graph'+k));
-		chart.draw(table, options);
+			var chart = new google.visualization.LineChart(document.getElementById('stock-graph'+k));
+			chart.draw(table, options);
+		}
+		else {
+			$("#stock-graph"+k).html("<span>No graph data available</span>");
+		}
 	});
 }
 
@@ -117,35 +122,40 @@ function drawMinuteChart() {
 	};
 	$.getJSON(Flask.url_for("table", {timeframe:"INTRADAY"}), parameters)
 	.done(function(data) {
-		var minTable = new google.visualization.DataTable();
-		minTable.addColumn('string', 'Date');
-		minTable.addColumn('number', 'Price');
-		var minChart = new google.visualization.LineChart(document.getElementById('minute-graph'));
-		minChart.draw(minTable, optionsHistory);
-		var table = "";
-		for (var item in data) {
-			tableName = item;
-		}
-		var arr = [];
-		for (var key in data[tableName]) {
-			arr.push(key);
-		}
-		for (var i=0; i<99; ++i) {
-			minTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
-			if (i == 98) {
-				setTimeout(function(){
-					$("#intradayTrigger").trigger('click');
-				}, 100);
+		if (data != "Error") {
+			var minTable = new google.visualization.DataTable();
+			minTable.addColumn('string', 'Date');
+			minTable.addColumn('number', 'Price');
+			var minChart = new google.visualization.LineChart(document.getElementById('minute-graph'));
+			minChart.draw(minTable, optionsHistory);
+			var table = "";
+			for (var item in data) {
+				tableName = item;
 			}
-		}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=0; i<99; ++i) {
+				minTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
+				if (i == 98) {
+					setTimeout(function(){
+						$("#intradayTrigger").trigger('click');
+					}, 100);
+				}
+			}
 
-		function reDrawMinute() {
-			setTimeout(function(){
-				minChart.draw(minTable, optionsHistory);
-			}, 200);
+			function reDrawMinute() {
+				setTimeout(function(){
+					minChart.draw(minTable, optionsHistory);
+				}, 200);
+			}
+			$(window).resize(reDrawMinute);
+		    $('#intradayTrigger').click(reDrawMinute);
 		}
-		$(window).resize(reDrawMinute);
-	    $('#intradayTrigger').click(reDrawMinute);
+		else {
+			$("#minute-graph").html("<span>No graph data available</span>");
+		}
 	});
 }
 
@@ -156,36 +166,41 @@ function drawDayChart() {
 	};
 	$.getJSON(Flask.url_for("table", {timeframe:"DAILY"}), parameters)
 	.done(function(data) {
-		var dayTable = new google.visualization.DataTable();
-		dayTable.addColumn('string', 'Date');
-		dayTable.addColumn('number', 'Price');
-		var table = "";
-		for (var item in data) {
-			tableName = item;
-		}
-		var arr = [];
-		for (var key in data[tableName]) {
-			arr.push(key);
-		}
-		if (arr.length>99) {
-			start = arr.length-99;
-			limit = arr.length;
+		if (data != "Error") {
+			var dayTable = new google.visualization.DataTable();
+			dayTable.addColumn('string', 'Date');
+			dayTable.addColumn('number', 'Price');
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			if (arr.length>99) {
+				start = arr.length-99;
+				limit = arr.length;
+			}
+			else {
+				start = 0;
+				limit = arr.length;
+			}
+			for (var i=start; i<limit; ++i) {
+				dayTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
+			}
+			var dayChart = new google.visualization.LineChart(document.getElementById('daily-graph'));
+			function reDrawDay() {
+				setTimeout(function(){
+					dayChart.draw(dayTable, optionsHistory);
+				}, 200);
+			}
+			$(window).resize(reDrawDay);
+		    $('#dailyTrigger').click(reDrawDay);
 		}
 		else {
-			start = 0;
-			limit = arr.length;
+			$("#daily-graph").html("<span>No graph data available</span>");
 		}
-		for (var i=start; i<limit; ++i) {
-			dayTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
-		}
-		var dayChart = new google.visualization.LineChart(document.getElementById('daily-graph'));
-		function reDrawDay() {
-			setTimeout(function(){
-				dayChart.draw(dayTable, optionsHistory);
-			}, 200);
-		}
-		$(window).resize(reDrawDay);
-	    $('#dailyTrigger').click(reDrawDay);
 	});
 }
 
@@ -196,36 +211,41 @@ function drawWeekChart() {
 	};
 	$.getJSON(Flask.url_for("table", {timeframe:"WEEKLY"}), parameters)
 	.done(function(data) {
-		var weekTable = new google.visualization.DataTable();
-		weekTable.addColumn('string', 'Date');
-		weekTable.addColumn('number', 'Price');
-		var table = "";
-		for (var item in data) {
-			tableName = item;
-		}
-		var arr = [];
-		for (var key in data[tableName]) {
-			arr.push(key);
-		}
-		if (arr.length>99) {
-			start = arr.length-99;
-			limit = arr.length;
+		if (data != "Error") {
+			var weekTable = new google.visualization.DataTable();
+			weekTable.addColumn('string', 'Date');
+			weekTable.addColumn('number', 'Price');
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			if (arr.length>99) {
+				start = arr.length-99;
+				limit = arr.length;
+			}
+			else {
+				start = 0;
+				limit = arr.length;
+			}
+			for (var i=start; i<limit; ++i) {
+				weekTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
+			}
+			var weekChart = new google.visualization.LineChart(document.getElementById('week-graph'));
+			function reDrawWeek() {
+				setTimeout(function(){
+					weekChart.draw(weekTable, optionsHistory);
+				}, 200);
+			}
+			$(window).resize(reDrawWeek);
+		    $('#weeklyTrigger').click(reDrawWeek);
 		}
 		else {
-			start = 0;
-			limit = arr.length;
+			$("#week-graph").html("<span>No graph data available</span>");
 		}
-		for (var i=start; i<limit; ++i) {
-			weekTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
-		}
-		var weekChart = new google.visualization.LineChart(document.getElementById('week-graph'));
-		function reDrawWeek() {
-			setTimeout(function(){
-				weekChart.draw(weekTable, optionsHistory);
-			}, 200);
-		}
-		$(window).resize(reDrawWeek);
-	    $('#weeklyTrigger').click(reDrawWeek);
 	});
 }
 
@@ -236,36 +256,41 @@ function drawMonthChart() {
 	};
 	$.getJSON(Flask.url_for("table", {timeframe:"MONTHLY"}), parameters)
 	.done(function(data) {
-		var monthTable = new google.visualization.DataTable();
-		monthTable.addColumn('string', 'Date');
-		monthTable.addColumn('number', 'Price');
-		var table = "";
-		for (var item in data) {
-			tableName = item;
-		}
-		var arr = [];
-		for (var key in data[tableName]) {
-			arr.push(key);
-		}
-		if (arr.length>99) {
-			start = arr.length-99;
-			limit = arr.length;
+		if (data != "Error") {
+			var monthTable = new google.visualization.DataTable();
+			monthTable.addColumn('string', 'Date');
+			monthTable.addColumn('number', 'Price');
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			if (arr.length>99) {
+				start = arr.length-99;
+				limit = arr.length;
+			}
+			else {
+				start = 0;
+				limit = arr.length;
+			}
+			for (var i=start; i<limit; ++i) {
+				monthTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
+			}
+			var monthChart = new google.visualization.LineChart(document.getElementById('month-graph'));
+			function reDrawMonth() {
+				setTimeout(function(){
+					monthChart.draw(monthTable, optionsHistory);
+				}, 200);
+			}
+			$(window).resize(reDrawMonth);
+		    $('#monthlyTrigger').click(reDrawMonth);
 		}
 		else {
-			start = 0;
-			limit = arr.length;
+			$("#month-graph").html("<span>No graph data available</span>");
 		}
-		for (var i=start; i<limit; ++i) {
-			monthTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["4. close"])]);
-		}
-		var monthChart = new google.visualization.LineChart(document.getElementById('month-graph'));
-		function reDrawMonth() {
-			setTimeout(function(){
-				monthChart.draw(monthTable, optionsHistory);
-			}, 200);
-		}
-		$(window).resize(reDrawMonth);
-	    $('#monthlyTrigger').click(reDrawMonth);
 	});
 
 }
@@ -375,6 +400,13 @@ $(function() { //on document ready
 		}
 	}
 
+	if (window.location.pathname == "/random") {
+		for( var i=1; i<($('.stock-box').length+1); ++i) {
+			name = $('#name'+ i.toString()).text();
+			getCompanyInfo(name, $('#info'+ i.toString()));
+		}
+	}
+
 	if (window.location.pathname == "/search") {
 		for( var i=1; i<($('.stock-box').length+1); ++i) {
 			getDBInfo(i);
@@ -395,6 +427,12 @@ $(function() { //on document ready
 
 	google.charts.setOnLoadCallback(function () {
 		if (window.location.pathname == "/") {
+			for( var i=1; i<($('.stock-box').length+1); ++i)
+			{
+				drawChart(i, optionsIndex);
+			}
+		}
+		if (window.location.pathname == "/random") {
 			for( var i=1; i<($('.stock-box').length+1); ++i)
 			{
 				drawChart(i, optionsIndex);
