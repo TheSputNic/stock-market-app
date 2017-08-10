@@ -5,3 +5,4 @@ cs50
 urllib
 tokenize
 collections
+bs4

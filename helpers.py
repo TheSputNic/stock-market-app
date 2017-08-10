@@ -2,10 +2,10 @@ import feedparser
 import urllib.parse
 import json
 import collections
+from bs4 import BeautifulSoup
 
 def articles(symbol):
     """Looks up articles for stock symbol"""
-
     if symbol in articles.cache:
         return articles.cache[symbol]
 
@@ -38,7 +38,22 @@ def history(symbol, timeframe):
 
 	return history.cache[symbol][timeframe]
 
+def getTrending():
+	""" Gets Trending Stocks """
+	if getTrending.cache:
+		return getTrending.cache
+
+	trendingStocks = "http://www.wallstreetsurvivor.com/investing-ideas/trending"
+	with urllib.request.urlopen(trendingStocks) as url:
+		soup = BeautifulSoup(url.read(), "html.parser")
+	data = soup.findAll('tbody')
+	out = data[0]['data-symbols']
+	outlist = out.split(",")
+
+	getTrending.cache = outlist
+	return getTrending.cache
 
 # initialize cache
 articles.cache = {}
 history.cache = {}
+getTrending.cache = {}

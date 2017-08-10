@@ -5,7 +5,6 @@ import json
 import collections
 from flask import Flask, jsonify, render_template, request, url_for, redirect
 from flask_jsglue import JSGlue
-
 from cs50 import SQL
 import helpers
 
@@ -30,7 +29,17 @@ def index():
 
 @app.route("/random")
 def random():
+	""" Renders a page with Random Stocks """
 	stocks = db.execute("SELECT * FROM companylist WHERE Symbol IN (SELECT Symbol FROM companylist ORDER BY RANDOM() LIMIT 3)")
+	return render_template("index.html", stocks = stocks)
+
+@app.route("/trending")
+def trending():
+	""" Renders a page with Trending Stocks """
+	stocks = []
+	trendingList = helpers.getTrending()
+	for symbol in trendingList:
+		stocks = stocks + db.execute("SELECT * FROM companylist WHERE Symbol = :symbol", symbol = symbol)
 	return render_template("index.html", stocks = stocks)
 
 @app.route("/history")
@@ -98,13 +107,10 @@ def search():
 	obj = []
 	result = db.execute("SELECT * FROM companylist WHERE Symbol LIKE :symbol LIMIT 20", symbol = q)
 	if result == []:
-		result = db.execute("SELECT * FROM companylist WHERE (Symbol LIKE :q) OR (Name LIKE :q) LIMIT 20", q = "%"+q+"%")
-		if result == []:
-			return render_template("search.html", popular= obj, apology="sorry, no results could be found...", q=q)
-		for i in result:
-			obj.append(i["Symbol"])
-		print(obj)
-		return render_template("search.html", popular= obj, apology="", q=q)
+		results = db.execute("SELECT * FROM companylist WHERE (Symbol LIKE :q) OR (Name LIKE :q) LIMIT 20", q = "%"+q+"%")
+		if results == []:
+			return render_template("search.html", results= results, apology="sorry, no results could be found...", q=q)
+		return render_template("search.html", results= results, apology="", q=q)
 	return redirect("/history?symbol="+q)
 
 if __name__ == '__main__':

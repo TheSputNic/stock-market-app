@@ -101,8 +101,8 @@ function drawChart(k, options) {
 	};
 	$.getJSON(Flask.url_for('daily'), parameters)
 	.done(function(data) {
-		if (data != "Error") {
-			for(i = 99; i>=0; --i)
+		if (data != "Error" && data.length > 1 ) {
+			for(i = data.length-1; i>=0; --i)
 				dates.push(data[i]);
 			table = new google.visualization.arrayToDataTable(dates);
 
@@ -400,19 +400,17 @@ $(function() { //on document ready
 		}
 	}
 
-	if (window.location.pathname == "/random") {
+	if (window.location.pathname == "/trending") {
 		for( var i=1; i<($('.stock-box').length+1); ++i) {
 			name = $('#name'+ i.toString()).text();
 			getCompanyInfo(name, $('#info'+ i.toString()));
 		}
 	}
 
-	if (window.location.pathname == "/search") {
+	if (window.location.pathname == "/random") {
 		for( var i=1; i<($('.stock-box').length+1); ++i) {
-			getDBInfo(i);
-		}
-		for( var i=1; i<($('.stock-box').length+1); ++i) {
-			drawChart(i, optionsSearch);
+			name = $('#name'+ i.toString()).text();
+			getCompanyInfo(name, $('#info'+ i.toString()));
 		}
 	}
 
@@ -432,17 +430,32 @@ $(function() { //on document ready
 				drawChart(i, optionsIndex);
 			}
 		}
+
+		if (window.location.pathname == "/trending") {
+			for( var i=1; i<($('.stock-box').length+1); ++i)
+			{
+				drawChart(i, optionsIndex);
+			}
+		}
+
 		if (window.location.pathname == "/random") {
 			for( var i=1; i<($('.stock-box').length+1); ++i)
 			{
 				drawChart(i, optionsIndex);
 			}
 		}
+
 		if (window.location.pathname == "/history")	{
 			drawMinuteChart();
 			drawDayChart();
 			drawWeekChart();
 			drawMonthChart();
+		}
+
+		if (window.location.pathname == "/search") {
+			for( var i=1; i<($('.stock-box').length+1); ++i) {
+				drawChart(i, optionsSearch);
+			}
 		}
 	});
 
