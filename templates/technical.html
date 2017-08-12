@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Technical: {{ symbol }}
+{% endblock %}
+
+{% block main %}
+
+<div class = "row">
+	<div class= "col-md-12 history-box">
+		<div class="stock-info">
+			<h2 id="symbol">{{ symbol }}</h2>
+			<h3 id="name">"{{ name }}"</h3>
+		</div>
+		<div class="row tech-box">
+			<div class= "col-md-2 pill-container">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a class="blocklink" href="/history?symbol={{symbol}}" id="histButton">HISTORIC STATISTICS</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#SMA" id="SMATrigger">SIMPLE MOVING AVERAGE</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#MACD" id="MACDTrigger">MOVING AVERAGE CONVERGENCE/DIVERGENCE</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#STOCH" id="STOCHTrigger">STOCHASTIC OSCILLATOR</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#RSI" id="RSITrigger">RELATIVE STRENGTH INDEX</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#ADX" id="ADXTrigger">AVGERAGE DIRECTIONAL MOVEMENT</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#CCI" id="CCITrigger">COMMODITY CHANNEL INDEX</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#AROON" id="AROONTrigger">AROON</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#BBANDS" id="BBANDSTrigger">BOLLINGER BANDS</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#AD" id="ADTrigger">CHAIKIN A/D</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#OBV" id="OBVTrigger">ON BALANCE VOLUME</a></li>
+				</ul>
+			</div>
+			<div class="col-md-10 tab-content">
+				<div id="SMA" class="tab-pane fade in active">
+					<div class="tech-graph-box">
+						<div id="SMA-graph">
+							<img alt="Loading" src="/static/loading.gif"/>
+						</div>
+					</div>
+				</div>
+				<div id="MACD" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="MACD-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="STOCH" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="STOCH-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="RSI" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="RSI-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="ADX" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="ADX-graph">
+							<img alt="Loading" src="/static/loading.gif"/>
+						</div>
+					</div>
+				</div>
+				<div id="CCI" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="CCI-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="AROON" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="AROON-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="BBANDS" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="BBANDS-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="AD" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="AD-graph">
+
+						</div>
+					</div>
+				</div>
+				<div id="OBV" class="tab-pane fade">
+					<div class="tech-graph-box">
+						<div id="OBV-graph">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

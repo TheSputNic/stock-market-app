@@ -41,7 +41,16 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-12 button-box">
+				<div id="histButton{{loop.index}}" class="button">
+					<a href='/history?symbol={{ stock["Symbol"] }}' + class="blocklink">HISTORIC STATISTICS</a>
+				</div>
+				<div id="techButton{{loop.index}}" class="button">
+					<a href='/technical?symbol={{ stock["Symbol"] }}' + class="blocklink">TECHNICAL STATISTICS</a>
+				</div>
+			</div>
 		</div>
+
 	{% endfor %}
 	<div class="apology">
 		<span>{{ apology }}</span>

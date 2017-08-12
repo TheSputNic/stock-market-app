@@ -8,112 +8,117 @@
 
 <div class = "row">
 	<div class= "col-md-8 history-box">
-		<div class= "col-md-2 pill-container">
-			<ul class="nav nav-pills nav-stacked">
-				<li><a class="blocklink" data-toggle="pill" href="#INTRADAY" id="intradayTrigger">MINUTE</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#DAILY" id="dailyTrigger">DAILY</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#WEEKLY" id="weeklyTrigger">WEEKLY</a></li>
-				<li><a class="blocklink" data-toggle="pill" href="#MONTHLY" id="monthlyTrigger">MONTHLY</a></li>
-			</ul>
-		</div>
-		<div class="stock-info">
-			<h2 id="symbol">{{ symbol }}</h2>
-			<h3 id="name"></h3>
-			<div class="comp-box">
-				<div>
-					<h4>IPO Year:</h4>
-					<p id="ipoyear" class="comp-info">...</p>
-				</div>
-				<div>
-					<h4>Market Cap:</h4>
-						<p id="markcap" class="comp-info">...</p>
-				</div>
-				<div>
-					<h4>Sector:</h4>
-						<p id="sector" class="comp-info">...</p>
-				</div>
-				<div>
-					<h4>Industry:</h4>
-						<p id="industry" class="comp-info">...</p>
+		<div class="row">
+			<div class= "col-md-2 pill-container">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a class="blocklink" data-toggle="pill" href="#INTRADAY" id="intradayTrigger">MINUTE</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#DAILY" id="dailyTrigger">DAILY</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#WEEKLY" id="weeklyTrigger">WEEKLY</a></li>
+					<li><a class="blocklink" data-toggle="pill" href="#MONTHLY" id="monthlyTrigger">MONTHLY</a></li>
+					<li><a class="blocklink" href="/technical?symbol={{symbol}}" id="techButton">TECHNICAL STATISTICS</a></li>
+				</ul>
+			</div>
+			<div class="col-md-10 stock-info">
+				<h2 id="symbol">{{ symbol }}</h2>
+				<h3 id="name"></h3>
+				<div class="comp-box">
+					<div>
+						<h4>IPO Year:</h4>
+						<p id="ipoyear" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Market Cap:</h4>
+							<p id="markcap" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Sector:</h4>
+							<p id="sector" class="comp-info">...</p>
+					</div>
+					<div>
+						<h4>Industry:</h4>
+							<p id="industry" class="comp-info">...</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="tab-content">
-			<div id="INTRADAY" class="tab-pane fade in active">
-				<div class="graph-box">
-					<div id="minute-graph">
-						<img alt="Loading" src="/static/loading.gif"/>
+		<div class="row">
+			<div class="col-md-12 tab-content">
+				<div id="INTRADAY" class="tab-pane fade in active">
+					<div class="graph-box">
+						<div id="minute-graph">
+							<img alt="Loading" src="/static/loading.gif"/>
+						</div>
 					</div>
+					<table id="intraday-table">
+						<tr><th>MINUTE - Prices and Volumes</th></tr>
+						<tr>
+							<th> Date / Time</th>
+							<th> Open </th>
+							<th> High </th>
+							<th> Low </th>
+							<th> Close </th>
+							<th> Volume </th>
+						</tr>
+
+					</table>
 				</div>
-				<table id="intraday-table">
-					<tr><th>MINUTE - Prices and Volumes</th></tr>
-					<tr>
-						<th> Date / Time</th>
-						<th> Open </th>
-						<th> High </th>
-						<th> Low </th>
-						<th> Close </th>
-						<th> Volume </th>
-					</tr>
+				<div id="DAILY" class="tab-pane fade">
+					<div class="graph-box">
+						<div id="daily-graph">
 
-				</table>
-			</div>
-			<div id="DAILY" class="tab-pane fade">
-				<div class="graph-box">
-					<div id="daily-graph">
-
+						</div>
 					</div>
+					<table id="daily-table">
+						<tr><th>DAILY - Prices and Volumes</th></tr>
+						<tr>
+							<th> Date / Time</th>
+							<th> Open </th>
+							<th> High </th>
+							<th> Low </th>
+							<th> Close </th>
+							<th> Volume </th>
+						</tr>
+
+					</table>
 				</div>
-				<table id="daily-table">
-					<tr><th>DAILY - Prices and Volumes</th></tr>
-					<tr>
-						<th> Date / Time</th>
-						<th> Open </th>
-						<th> High </th>
-						<th> Low </th>
-						<th> Close </th>
-						<th> Volume </th>
-					</tr>
+				<div id="WEEKLY" class="tab-pane fade">
+					<div class="graph-box">
+						<div id="week-graph">
 
-				</table>
-			</div>
-			<div id="WEEKLY" class="tab-pane fade">
-				<div class="graph-box">
-					<div id="week-graph">
-
+						</div>
 					</div>
+					<table id="weekly-table">
+						<tr><th>WEEKLY - Prices and Volumes</th></tr>
+						<tr>
+							<th> Date / Time</th>
+							<th> Open </th>
+							<th> High </th>
+							<th> Low </th>
+							<th> Close </th>
+							<th> Volume </th>
+						</tr>
+
+					</table>
 				</div>
-				<table id="weekly-table">
-					<tr><th>WEEKLY - Prices and Volumes</th></tr>
-					<tr>
-						<th> Date / Time</th>
-						<th> Open </th>
-						<th> High </th>
-						<th> Low </th>
-						<th> Close </th>
-						<th> Volume </th>
-					</tr>
+				<div id="MONTHLY" class="tab-pane fade">
+					<div class="graph-box">
+						<div id="month-graph">
 
-				</table>
-			</div>
-			<div id="MONTHLY" class="tab-pane fade">
-				<div class="graph-box">
-					<div id="month-graph">
-
+						</div>
 					</div>
-				</div>
-				<table id="monthly-table">
-					<tr><th>MONTHLY - Prices and Volumes</th></tr>
-					<tr>
-						<th> Date / Time</th>
-						<th> Open </th>
-						<th> High </th>
-						<th> Low </th>
-						<th> Close </th>
-						<th> Volume </th>
-					</tr>
+					<table id="monthly-table">
+						<tr><th>MONTHLY - Prices and Volumes</th></tr>
+						<tr>
+							<th> Date / Time</th>
+							<th> Open </th>
+							<th> High </th>
+							<th> Low </th>
+							<th> Close </th>
+							<th> Volume </th>
+						</tr>
 
-				</table>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

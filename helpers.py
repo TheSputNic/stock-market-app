@@ -38,6 +38,26 @@ def history(symbol, timeframe):
 
 	return history.cache[symbol][timeframe]
 
+def techtable(symbol, function):
+	"""Gets the technical data of a stock"""
+	if symbol in techtable.cache:
+		if function in techtable.cache[symbol] and techtable.cache[symbol][function] != "":
+			return techtable.cache[symbol][function]
+
+	stock_info = "https://www.alphavantage.co/query?function=" + function \
+				+ "&symbol={}&interval=daily".format(urllib.parse.quote(symbol, safe="")) \
+				+ "&time_period=100&series_type=close&apikey=U62GJHH0AYS16H87";
+	with urllib.request.urlopen(stock_info) as url:
+		data = json.loads(url.read().decode(), object_pairs_hook=collections.OrderedDict)
+
+	if len(data) == 1:
+		return "Error"
+	if symbol not in techtable.cache:
+		techtable.cache[symbol] = {"SMA": "", "MACD": "", "STOCH": "", "RSI": "", "ADX": "", "CCI": "", "AROON": "", "BBANDS": "", "AD": "", "OBV": ""}
+	techtable.cache[symbol][function] = data
+
+	return techtable.cache[symbol][function]
+
 def getTrending():
 	""" Gets Trending Stocks """
 	if getTrending.cache:
@@ -56,4 +76,5 @@ def getTrending():
 # initialize cache
 articles.cache = {}
 history.cache = {}
+techtable.cache = {}
 getTrending.cache = {}

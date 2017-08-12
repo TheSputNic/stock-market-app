@@ -64,6 +64,36 @@ var optionsHistory = {
 	}
 };
 
+var optionsTechnical = {
+	legend: 'none',
+	fontSize: 14,
+	height: 500,
+	colors: ['#00FF48', '#FF3333', '#FFFF66'],
+	chartArea: {
+		left: 50,
+		top: 10,
+		width: "100%",
+		height: "85%"
+	},
+	backgroundColor: "#323232",
+	hAxis: {
+		textPosition: 'out',
+		textStyle: {
+			fontSize: 10,
+			color: '#ffffff'
+		},
+		showTextEvery: 15
+	},
+	vAxis: {
+		textStyle: {
+			color: '#ffffff'
+		},
+		gridlines: {
+			color: '#7F7F7F'
+		}
+	}
+};
+
 var optionsSearch = {
 	legend: 'none',
 	fontSize: 14,
@@ -295,6 +325,389 @@ function drawMonthChart() {
 
 }
 
+function drawSMAChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"SMA"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var smaTable = new google.visualization.DataTable();
+			smaTable.addColumn('string', 'Date');
+			smaTable.addColumn('number', 'Price');
+			var smaChart = new google.visualization.LineChart(document.getElementById('SMA-graph'));
+			smaChart.draw(smaTable, optionsTechnical);
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				smaTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["SMA"])]);
+				if (i == arr.length-1) {
+					setTimeout(function(){
+						$("#SMATrigger").trigger('click');
+					}, 100);
+				}
+			}
+
+			function reDrawSMA() {
+				setTimeout(function(){
+					smaChart.draw(smaTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawSMA);
+		    $('#SMATrigger').click(reDrawSMA);
+		}
+		else {
+			$("#SMA-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawMACDChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"MACD"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var macdTable = new google.visualization.DataTable();
+			macdTable.addColumn('string', 'Date');
+			macdTable.addColumn('number', 'MACD');
+			macdTable.addColumn('number', 'MACD Hist');
+			macdTable.addColumn('number', 'MACD MACD Signal');
+			var macdChart = new google.visualization.LineChart(document.getElementById('MACD-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				macdTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["MACD"]), parseFloat(data[tableName][arr[i]]["MACD_Hist"]), parseFloat(data[tableName][arr[i]]["MACD_Signal"])]);
+			}
+			function reDrawMACD() {
+				setTimeout(function(){
+					macdChart.draw(macdTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawMACD);
+		    $('#MACDTrigger').click(reDrawMACD);
+		}
+		else {
+			$("#MACD-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawSTOCHChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"STOCH"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var stochTable = new google.visualization.DataTable();
+			stochTable.addColumn('string', 'Date');
+			stochTable.addColumn('number', 'SlowD');
+			stochTable.addColumn('number', 'SlowK');
+			var stochChart = new google.visualization.LineChart(document.getElementById('STOCH-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				stochTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["SlowD"]), parseFloat(data[tableName][arr[i]]["SlowK"])]);
+			}
+			function reDrawSTOCH() {
+				setTimeout(function(){
+					stochChart.draw(stochTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawSTOCH);
+		    $('#STOCHTrigger').click(reDrawSTOCH);
+		}
+		else {
+			$("#STOCH-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawRSIChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"RSI"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var rsiTable = new google.visualization.DataTable();
+			rsiTable.addColumn('string', 'Date');
+			rsiTable.addColumn('number', 'RSI');
+			var rsiChart = new google.visualization.LineChart(document.getElementById('RSI-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				rsiTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["RSI"])]);
+			}
+			function reDrawRSI() {
+				setTimeout(function(){
+					rsiChart.draw(rsiTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawRSI);
+		    $('#RSITrigger').click(reDrawRSI);
+		}
+		else {
+			$("#RSI-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawADXChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"ADX"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var adxTable = new google.visualization.DataTable();
+			adxTable.addColumn('string', 'Date');
+			adxTable.addColumn('number', 'ADX');
+			var adxChart = new google.visualization.LineChart(document.getElementById('ADX-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				adxTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["ADX"])]);
+			}
+			function reDrawADX() {
+				setTimeout(function(){
+					adxChart.draw(adxTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawADX);
+		    $('#ADXTrigger').click(reDrawADX);
+		}
+		else {
+			$("#ADX-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawCCIChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"CCI"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var cciTable = new google.visualization.DataTable();
+			cciTable.addColumn('string', 'Date');
+			cciTable.addColumn('number', 'CCI');
+			var cciChart = new google.visualization.LineChart(document.getElementById('CCI-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				cciTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["CCI"])]);
+			}
+			function reDrawCCI() {
+				setTimeout(function(){
+					cciChart.draw(cciTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawCCI);
+		    $('#CCITrigger').click(reDrawCCI);
+		}
+		else {
+			$("#CCI-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawAROONChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"AROON"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var aroonTable = new google.visualization.DataTable();
+			aroonTable.addColumn('string', 'Date');
+			aroonTable.addColumn('number', 'AROON Up');
+			aroonTable.addColumn('number', 'AROON Down');
+			var aroonChart = new google.visualization.LineChart(document.getElementById('AROON-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				aroonTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["Aroon Up"]), parseFloat(data[tableName][arr[i]]["Aroon Down"])]);
+			}
+			function reDrawAROON() {
+				setTimeout(function(){
+					aroonChart.draw(aroonTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawAROON);
+		    $('#AROONTrigger').click(reDrawAROON);
+		}
+		else {
+			$("#AROON-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawBBANDSChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"BBANDS"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var bbandsTable = new google.visualization.DataTable();
+			bbandsTable.addColumn('string', 'Date');
+			bbandsTable.addColumn('number', 'Real Upper Band');
+			bbandsTable.addColumn('number', 'Real Lower Band');
+			bbandsTable.addColumn('number', 'Real Middle Band');
+			var bbandsChart = new google.visualization.LineChart(document.getElementById('BBANDS-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				bbandsTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["Real Upper Band"]), parseFloat(data[tableName][arr[i]]["Real Lower Band"]), parseFloat(data[tableName][arr[i]]["Real Middle Band"])]);
+			}
+			function reDrawBBANDS() {
+				setTimeout(function(){
+					bbandsChart.draw(bbandsTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawBBANDS);
+		    $('#BBANDSTrigger').click(reDrawBBANDS);
+		}
+		else {
+			$("#BBANDS-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawADChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"AD"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var adTable = new google.visualization.DataTable();
+			adTable.addColumn('string', 'Date');
+			adTable.addColumn('number', 'Chaikin A/D');
+			var adChart = new google.visualization.LineChart(document.getElementById('AD-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				adTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["Chaikin A/D"])]);
+			}
+			function reDrawAD() {
+				setTimeout(function(){
+					adChart.draw(adTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawAD);
+		    $('#ADTrigger').click(reDrawAD);
+		}
+		else {
+			$("#AD-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
+function drawOBVChart() {
+	// Create the data table.
+	var parameters = {
+		symbol: $('#symbol').text(),
+	};
+	$.getJSON(Flask.url_for("techtable", {function:"OBV"}), parameters)
+	.done(function(data) {
+		if (data != "Error") {
+			var obvTable = new google.visualization.DataTable();
+			obvTable.addColumn('string', 'Date');
+			obvTable.addColumn('number', 'OBV');
+			var obvChart = new google.visualization.LineChart(document.getElementById('OBV-graph'));
+			var table = "";
+			for (var item in data) {
+				tableName = item;
+			}
+			var arr = [];
+			for (var key in data[tableName]) {
+				arr.push(key);
+			}
+			for (var i=arr.length-365; i<arr.length; ++i) {
+				obvTable.addRow([arr[i], parseFloat(data[tableName][arr[i]]["OBV"])]);
+			}
+			function reDrawOBV() {
+				setTimeout(function(){
+					obvChart.draw(obvTable, optionsTechnical);
+				}, 200);
+			}
+			$(window).resize(reDrawOBV);
+		    $('#OBVTrigger').click(reDrawOBV);
+		}
+		else {
+			$("#OBV-graph").html("<span>No graph data available</span>");
+		}
+	});
+}
+
 function getCompanyInfo(name, out) {
 	name = name.replace('"', ' ');
 	name = name.replace('"', ' ');
@@ -450,6 +863,19 @@ $(function() { //on document ready
 			drawDayChart();
 			drawWeekChart();
 			drawMonthChart();
+		}
+
+		if (window.location.pathname == "/technical")	{
+			drawSMAChart();
+			drawMACDChart();
+			drawSTOCHChart();
+			drawRSIChart();
+			drawADXChart();
+			drawCCIChart();
+			drawAROONChart();
+			drawBBANDSChart();
+			drawADChart();
+			drawOBVChart();
 		}
 
 		if (window.location.pathname == "/search") {

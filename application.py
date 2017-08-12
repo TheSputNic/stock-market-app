@@ -51,6 +51,28 @@ def history():
 	symbol = symbol.upper()
 	return render_template("history.html", symbol= symbol)
 
+@app.route("/technical")
+def technical():
+	"""Show the technical stats for a stock"""
+	symbol = request.args.get("symbol")
+	if symbol == None:
+		raise RuntimeError("MissingArgument")
+	symbol = symbol.upper()
+	name = db.execute("SELECT Name FROM companylist WHERE Symbol LIKE :symbol", symbol = symbol)[0]["Name"]
+	return render_template("technical.html", symbol= symbol, name = name)
+
+@app.route("/techtable/<function>")
+def techtable(function):
+	"""Returns technical analysis data for a stock in JSON format"""
+	symbol = request.args.get("symbol")
+	if symbol == None:
+		raise RuntimeError("MissingArgument")
+	symbol = symbol.upper()
+	data = helpers.techtable(symbol, function)
+	if data == "Error":
+		return jsonify("Error")
+	return jsonify(data)
+
 @app.route("/table/<timeframe>")
 def table(timeframe):
 	"""Returns table data in JSON format"""
