@@ -1,0 +1,8 @@
+feedparser
+Flask
+Flask_JSGlue
+cs50
+urllib
+tokenize
+collections
+bs4

@@ -1,25 +1,18 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	Stock Market App
+	Search: {{ q }}
 {% endblock %}
 
 {% block main %}
 <div class = "row">
-	{% for stock in stocks %}
-		<div class= "col-md-4 stock-box">
-			<div class="stock-info">
+	{% for stock in results %}
+		<div class= "col-md-12 stock-box">
+			<div class="col-md-4 stock-info">
 				<a href='/history?symbol={{ stock["Symbol"] }}' + class="blocklink">
 					<h2 id="symbol{{ loop.index }}">{{ stock["Symbol"] }}</h2>
-					<h3 id="name{{ loop.index }}">"{{ stock["Name"] | safe }}"</h3>
+					<h3 id="name{{ loop.index }}">{{ stock["Name"] }}</h3>
 				</a>
-			</div>
-			<div class="graph-box">
-				<div id="stock-graph{{ loop.index }}">
-					<img alt="Loading" src="/static/loading.gif"/>
-				</div>
-			</div>
-			<div class="stock-info">
 				<div class="comp-box">
 					<div>
 						<h4>IPO Year:</h4>
@@ -38,14 +31,30 @@
 							<p id="industry{{ loop.index }}" class="comp-info">{{ stock["Industry"] | safe }}</p>
 					</div>
 				</div>
-				<div>
-					<h4 id="hinfo{{ loop.index }}">Company Info:</h4>
-						<p id="info{{ loop.index }}">...</p>
+			</div>
+			<div class="col-md-8">
+				<div class="search-box">
+					<div class="graph-box">
+						<div id="stock-graph{{ loop.index }}">
+							<img alt="Loading" src="/static/loading.gif"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 button-box">
+				<div id="histButton{{loop.index}}" class="button">
+					<a href='/history?symbol={{ stock["Symbol"] }}' + class="blocklink">HISTORIC STATISTICS</a>
+				</div>
+				<div id="techButton{{loop.index}}" class="button">
+					<a href='/technical?symbol={{ stock["Symbol"] }}' + class="blocklink">TECHNICAL STATISTICS</a>
 				</div>
 			</div>
 		</div>
-	{% endfor %}
 
+	{% endfor %}
+	<div class="apology">
+		<span>{{ apology }}</span>
+	</div>
 </div>
 
 {% endblock %}
