@@ -892,4 +892,10 @@ $(function() { //on document ready
 			window.location.replace(url);
 		}
 	});
+
+	$("#searchform").on("submit", function(e) {
+		e.preventDefault();
+		var url = ('/search?q=' + ($("#search").val()));
+		window.location.replace(url);
+	});
 });

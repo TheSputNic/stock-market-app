@@ -67,6 +67,7 @@ body {
 
 .pill-container {
 	padding: 0px;
+	display: inline-block;
 }
 
 .container-fluid {
@@ -171,6 +172,7 @@ body {
 .stock-info {
 	padding: 15px;
 	line-height: 1.5;
+	display: inline-block;
 }
 
 .comp-box {
